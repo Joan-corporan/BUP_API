@@ -1,0 +1,40 @@
+<!-- ejecutame con: -->
+<!--
+    mvn openapi-generator:generate -f archetype_settings.xml
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>api-soc</groupId>
+    <artifactId>api-soc</artifactId>
+    <version>1.0.0</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>5.3.0</version>
+                <configuration>
+                    <inputSpec>openapi.json</inputSpec>
+                    <generatorName>nodejs-express-server</generatorName>
+                    <output>${project.basedir}</output>
+                    <generateApis>true</generateApis>
+                    <generateApiTests>true</generateApiTests>
+                    <configOptions>
+                        <basePackage>cl.bci.ssff.recarga.main</basePackage>
+                        <modelPackage>cl.bci.soc.viewmodel</modelPackage>
+                        <apiPackage>cl.bci.ssff.soc.controller</apiPackage>
+                        <configPackage>cl.bci.soc.configuration</configPackage>
+                        <groupId>cl.bci.ssff</groupId>
+                        <artifactId>base-unica-personas</artifactId>
+                        <artifactVersion>1.0.0</artifactVersion>
+                        <skipDefaultInterface>true</skipDefaultInterface>
+                        <useTags>true</useTags>
+                        <useBeanValidation>true</useBeanValidation>
+                        <performBeanValidation>true</performBeanValidation>
+                        <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                    </configOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

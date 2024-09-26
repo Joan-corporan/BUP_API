@@ -1,0 +1,118 @@
+db.BUP_CONTACT_DETAIL.insertOne( {
+    clientID: "1234567",
+    clientDV: "K",
+    clientMug: "abc123",
+    address: {
+      value: "123 Calle Falsa",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    apartment: {
+      value: "502B",
+      channelModification: "App",
+      modifiedAt: new Date()
+    },
+    block: {
+      value: "B2",
+      channelModification: "Mobile",
+      modifiedAt: new Date()
+    },
+    commune: {
+      value: "Santiago",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    region: {
+      value: "Metropolitana",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    latitude: {
+      value: "-33.456",
+      channelModification: "GPS",
+      modifiedAt: new Date()
+    },
+    longitude: {
+      value: "-70.648",
+      channelModification: "GPS",
+      modifiedAt: new Date()
+    },
+    email: {
+      value: "correo@ejemplo.com",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    customerType: {
+      value: "T",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    landlinePhone: {
+      value: "+56212345678",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    mobilePhone: {
+      value: "+56952345678",
+      channelModification: "App",
+      modifiedAt: new Date()
+    },
+    mobileActiveWSP: {
+      value: "SI",
+      channelModification: "App",
+      modifiedAt: new Date()
+    },
+    mobileProtectionMark: {
+      value: "NO",
+      channelModification: "App",
+      modifiedAt: new Date()
+    },
+    product: {
+      value: "ProductoX",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    channel: {
+      value: "Web",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    process: {
+      value: "Proceso Y",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    emailProtectionMark: {
+      value: "SI",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    eeccSubscription: {
+      value: "NO",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    dataConsentMark: {
+      value: "SI",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    requestNumber: {
+      value: "REQ123",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    internalBlocking: {
+      value: "Call",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    ip: {
+      value: "192.168.1.1",
+      channelModification: "Web",
+      modifiedAt: new Date()
+    },
+    creatorChannel: "Web",
+    originDate: new Date("2023-09-25"),
+    registrationDate: "25/09/2023 14:30:00"
+  });

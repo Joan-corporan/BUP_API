@@ -1,0 +1,24 @@
+application:
+  name: api-bup
+server:
+  port: 8002
+  contextPath: /api-bup
+logstash:
+  host: logstash-svc.logging.svc.cluster.local
+  port: 4560
+
+#APM
+apm:
+  secretToken: "YOiEcMZym97byxFnTi"
+  serverUrl: https://670bc3da2ad64a0582d2f5a1b141927d.apm.eastus2.azure.elastic-cloud.com:443
+  environment: "dev"
+
+#AXIOS
+instaxios:
+  timeout: 40000
+
+#URL
+url:
+
+  getContactDetails: "http://10.0.92.47:9080/private/bup/contact-details"
+  postContactDetails: "http://10.0.92.47:9080/private/bup/contact-details"

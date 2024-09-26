@@ -1,0 +1,54 @@
+{
+  "name": "base-unica-personas",
+  "version": "1.1.0",
+  "description": "Api Omnicanal de Venta",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js",
+    "localhost": "nodemon index.js"
+  },
+  "keywords": [
+    "openapi-generator",
+    "openapi"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "@ssff/bootstrap": "^2.0.0",
+    "base-unica-personas": "file:",
+    "body-parser": "^1.19.0",
+    "camelcase": "^5.3.1",
+    "chilean-rutify": "^2.1.0",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "elastic-apm-node": "^3.37.0",
+    "express": "^4.16.4",
+    "express-openapi-validator": "^4.13.8",
+    "js-yaml": "^3.3.0",
+    "moment": "^2.29.4",
+    "mongodb": "^6.8.0",
+    "node-cron": "^3.0.1",
+    "ono": "^5.0.1",
+    "openapi-sampler": "^1.0.0-beta.15",
+    "swagger-ui-express": "^4.0.2",
+    "winston": "^3.2.1",
+    "yaml": "^2.4.5",
+    "yup": "^1.0.2"
+  },
+  "devDependencies": {
+    "axios": "^1.7.2",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "mocha": "^10.4.0",
+    "nodemon": "^3.1.4"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    }
+  }
+}

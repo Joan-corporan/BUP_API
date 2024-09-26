@@ -1,0 +1,476 @@
+openapi: 3.0.0
+info:
+  description: Api orquestadora de servicios para el sistema BUP (Base única de personas)
+  title: BUP (Base única de personas)
+  version: 1.0.0
+servers:
+  - url: /api-bup
+tags:
+  - name: Consultas-BUP
+    description: Endpoints para realizar consultas sobre datos de contacto del sistema BUP
+  - name: Creación-BUP
+    description: Endpoints para realizar creación de nuevos datos de contacto en el sistema BUP 
+  - name: Modificación-BUP 
+    description: Endpoints para realizar modificación de datos de contacto en el sistema BUP     
+paths:
+  /private/bup/contact-details/{client}:
+    get:
+      description: Obtener detalles de contacto combinando ClientID y ClientDV
+      summary: Obtener información de datos de contacto de una persona en particular
+      tags:
+        - Consultas-BUP
+      x-eov-operation-handler: controllers/bupController      
+      operationId: getContactDetails    
+      parameters:
+        - in: path
+          name: client
+          description: RUT completo, que incluye el número y el dígito verificador.  
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/contactDetailsInfoResponse"
+          description: Cliente encontrado
+        "204":
+          description: No Content
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Cliente no encontrado
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Conflict          
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Internal Server Error
+  /private/bup/contact-details:
+    post:
+      description: Crear información de datos de contacto de una persona en particular
+      summary: Crear información de datos de contacto de una persona en particular
+      tags:
+        - Creación-BUP
+      x-eov-operation-handler: controllers/bupController      
+      operationId: postContactDetailsInfo        
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/contactDetailsInfoRequestPost"
+      responses:
+        "201":
+          description: Cliente creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/contactDetailsCreatedResponse"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Conflict          
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Internal Server Error                
+    put:
+      description: Modificar información de datos de contacto de una persona en particular
+      summary: Modificar información de datos de contacto de una persona en particular
+      tags:
+        - Modificación-BUP
+      x-eov-operation-handler: controllers/bupController      
+      operationId: putContactDetailsInfo        
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/contactDetailsInfoRequestPut"
+      responses:
+        "200":
+          description: Cliente actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/contactDetailsCreatedResponse"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Not Found
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Conflict          
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorGenerico"
+          description: Internal Server Error      
+components:
+  schemas:
+    ErrorGenerico:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      title: ErrorGenerico
+      type: object
+    
+    contactDetailsInfoResponse:      
+      title: contactDetailsInfoResponse
+      type: object
+      properties:
+        clientID:
+          type: string
+          description: Identificador único de la persona
+          default: "12345678"
+        clientDV:
+          type: string
+          description: Dígito de verificación del DNI de la persona
+          default: "K"
+        clientMug:
+          type: string
+          description: Identificador utilizado por algunos sistemas
+          default: "123456"
+        address:
+          type: string
+          description: Dirección específica de la persona
+          default: "Calle Falsa 123"
+        apartment:
+          type: string
+          description: Departamento
+          default: "Departamento 1"
+        block:
+          type: string
+          description: Block
+          default: "A"
+        commune:
+          type: string
+          description: Comuna
+          default: "Santiago"
+        region:
+          type: string
+          description: Región
+          default: "Metropolitana"
+        latitude:
+          type: string
+          description: Latitud
+          default: "41.40338"
+        longitude:
+          type: string
+          description: Longitude
+          default: "2.17403"
+        email:
+          type: string
+          description: Correo electrónico válido asociado al DNI de la persona
+          default: contact@bup.cl
+        mobilePhone:
+          type: string
+          description: Número de teléfono móvil de la persona.     
+          default: "+56949497383"
+        qtyDaysLastModificationEmail:
+          type: string
+          description: Cantidad de dias de la ultima modificacion del correo
+          default: "20"
+        customerType:
+          type: string
+          description: Tipo de cliente (T "Titular", A "Adicional", P "Prospecto", NC "No Cliente")
+          default: "T"
+        qtyDaysLastModificationMobilePhone:
+          type: string
+          description: Cantidad de dias de la última modificación del teléfono móvil    
+          default: "20"      
+        landlinePhone:
+          type: string
+          description: Número de teléfono fijo del cliente
+          default: "+56949497383"
+        mobileActiveWSP:
+          type: string
+          description: Indica si el móvil está activo en WSP (SI/NO)
+          default: "SI"
+        mobileProtectionMark:
+          type: string
+          description: Marca de protección móvil (SI/NO)
+          default: "NO"
+        product:
+          type: string
+          description: Producto
+          default: "Producto X"
+        channel:
+          type: string
+          description: Canal o sistema origen
+          default: "SOC"
+        process:
+          type: string
+          description: Proceso
+          default: "Proceso Z"
+        emailProtectionMark:
+          type: string
+          description: Email protection mark (YES/NO)
+          default: "NO"
+        eeccSubscription:
+          type: string
+          description: Suscripción EECC (SÍ/NO). Considere actualizar si el correo electrónico cambia, solo aplica para titulares; estará en blanco para clientes adicionales.
+          default: "NO"
+        dataConsentMark:
+          type: string
+          description: Marca de consentimiento de datos, campo solo para titulares
+          default: "SI"
+        requestNumber:
+          type: string
+          description: Número de solicitud
+          default: "123456" 
+        internalBlocking:
+          type: string
+          description: Bloqueo interno SSFF (Call, One, otro)
+          default: "Call"
+        ip:
+          type: string
+          description: Ip del lugar de creacion/Actualizacion del dato de contacto
+          default: "123.312.23"
+        originDate:
+          type: string
+          description: Fecha de creación de la informacion de la persona en en el sistema origen (DD/MM/AAAA HH:MM:SS)
+          default: "12/12/2024 14:14:14"        
+        registrationDate:
+          type: string
+          description: Fecha de creación del registro en mongoDB (DD/MM/AAAA HH:MM:SS)
+          default: "12/12/2024 14:14:14"           
+    contactDetailsInfoRequestPost:
+      title: contactDetailsInfoRequestPost
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/contactDetailsInfoRequestPut"
+      properties:
+        originDate:
+          type: string
+          description: Fecha de creación de la informacion de la persona en en el sistema origen (DD/MM/AAAA HH:MM:SS)
+          default: "12/12/2024 14:14:14"
+          minLength: 1
+      required:
+        - originDate
+    contactDetailsInfoRequestPut:
+      title: contactDetailsInfoRequestPut
+      type: object
+      properties:
+        clientID:
+          type: string
+          description: Identificador único de la persona
+          default: "12345678"
+          minLength: 7
+          maxLength: 12
+          pattern: '^[0-9]+$'
+        clientDV:
+          type: string
+          description: Dígito de verificación del DNI de la persona
+          default: "K"   
+          minLength: 1
+          maxLength: 1  
+          pattern: "^[0-9Kk]$"
+        clientMug:
+          type: string
+          description: Identificador utilizado por algunos sistemas
+          default: "123456"          
+        address:
+          type: string
+          description: Dirección específica de la persona
+          default: "Calle Falsa 123"   
+          minLength: 1       
+        apartment:
+          type: string
+          description: Departamento
+          default: "Departamento 1"
+        block:
+          type: string
+          description: Block
+          default: "A"
+        commune:
+          type: string
+          description: Comuna
+          default: "Santiago"
+          minLength: 1
+        region:
+          type: string
+          description: Región
+          default: "Metropolitana"
+          minLength: 1
+        latitude:
+          type: string
+          description: Latitud
+          pattern: "^([-+]?\\d{1,2}\\.\\d+)$"
+          default: "41.40338"
+        longitude:
+          type: string
+          description: Longitude
+          pattern: "^([-+]?\\d{1,3}\\.\\d+)$"
+          default: "2.17403"
+        email:
+          type: string
+          description: Correo electrónico válido asociado al DNI de la persona
+          default: contact@bup.cl
+          format: email
+          pattern: '^(?![.-])[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?<![.-])$'  
+        customerType:
+          type: string
+          description: Tipo de cliente (T "Titular", A "Adicional", P "Prospecto", NC "No Cliente")
+          enum:
+            - "T"
+            - "A"
+            - "P"
+            - "NC"
+          default: "T"
+          minLength: 1
+        landlinePhone:
+          type: string
+          description: Número de teléfono fijo del cliente
+          default: "+56949497383"
+          pattern: "^\\+56[2-9][0-9]{8}$"
+        mobilePhone:
+          type: string
+          description: Número de teléfono móvil de la persona.     
+          default: "+56949497383"
+          pattern: '^\+569[2-9][0-9]{7}$'
+          minLength: 12
+          maxLength: 12   
+        mobileActiveWSP:
+          type: string
+          description: Indica si el móvil está activo en WSP (SI/NO)
+          enum:
+            - "SI"
+            - "NO"   
+          default: "SI"
+          minLength: 1       
+        mobileProtectionMark:
+          type: string
+          description: Marca de protección móvil (SI/NO)
+          enum:
+            - "SI"
+            - "NO"  
+          default: "NO"
+          minLength: 1        
+        product:
+          type: string
+          description: Producto
+          default: "Producto X"
+          minLength: 1
+        channel:
+          type: string
+          description: Canal
+          default: "SOC"
+          minLength: 1
+        process:
+          type: string
+          description: Proceso
+          default: "Proceso Z"
+          minLength: 1
+        emailProtectionMark:
+          type: string
+          description: Email protection mark (YES/NO)
+          enum:
+            - "SI"
+            - "NO"   
+          default: "NO"
+          minLength: 1       
+        eeccSubscription:
+          type: string
+          description: Suscripción EECC (SÍ/NO). Considere actualizar si el correo electrónico cambia, solo aplica para titulares; estará en blanco para clientes adicionales.
+          enum:
+            - "SI"
+            - "NO"
+          default: "NO"
+          minLength: 1
+        dataConsentMark:
+          type: string
+          description: Marca de consentimiento de datos, campo solo para titulares
+          default: "SI"
+          minLength: 1
+        requestNumber:
+          type: string
+          description: Número de solicitud
+          default: "123456"
+          minLength: 1 
+        internalBlocking:
+          type: string
+          description: Bloqueo interno SSFF (Call, One, otro)
+          default: "Call"
+          minLength: 1
+        ip:
+          type: string
+          description: Ip del lugar de creacion/Actualizacion del dato de contacto
+          default: "123.312.23"
+      required:
+        - clientID
+        - clientDV
+        - address
+        - commune
+        - region
+        - email
+        - mobilePhone 
+        - customerType
+        - mobileActiveWSP
+        - mobileProtectionMark
+        - product
+        - channel
+        - process
+        - emailProtectionMark
+        - eeccSubscription
+        - dataConsentMark
+        - requestNumber
+        - internalBlocking
+
+    contactDetailsCreatedResponse:
+      title: contactDetailsCreatedResponse
+      type: object
+      properties:
+        bupID:
+          type: string
+          description: Identificador único BUP de la persona
+        message:
+          type: string
+          description: Mensaje de respuesta

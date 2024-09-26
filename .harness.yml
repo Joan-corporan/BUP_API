@@ -1,0 +1,88 @@
+# HARNESS 1656424749237 
+kind: pipeline
+type: kubernetes
+name: base-unica-personas
+steps:
+  - name: build
+    image: node:14.15
+    commands:
+      - >-
+        npm config set @ssff:registry
+        https://nexus.retailcard.cl/repository/npm-private/
+      - >-
+        echo "developer:$NEXUS_DEVELOPER_PASSWORD" > npm login --scope=@ssff
+        --registry https://nexus.retailcard.cl/repository/npm-private/
+      - >-
+        rm -rf node_modules package-lock.json || npm install @ssff/bootstrap ||
+        npm install
+  - name: docker-build-for-develop
+    image: plugins/docker
+    when:
+      branch:
+        - develop
+    settings:
+      repo: serviciosfinancieros.azurecr.io/${DRONE_REPO}
+      registry: serviciosfinancieros.azurecr.io
+      tags:
+        - develop
+        - dev-${DRONE_BUILD_NUMBER}
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+  - name: docker-build-for-qa
+    image: plugins/docker
+    when:
+      branch:
+        - qa
+    settings:
+      repo: serviciosfinancieros.azurecr.io/${DRONE_REPO}
+      registry: serviciosfinancieros.azurecr.io
+      tags:
+        - qa
+        - qa-${DRONE_BUILD_NUMBER}
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+  - name: docker-build-for-prod
+    image: plugins/docker
+    when:
+      branch:
+        - master
+    settings:
+      repo: serviciosfinancieros.azurecr.io/${DRONE_REPO}
+      registry: serviciosfinancieros.azurecr.io
+      tags:
+        - prod-${DRONE_BUILD_NUMBER}
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+#  - name: code-analysis
+#    image: aosapps/drone-sonar-plugin
+#    pull: true
+#    commands:
+#      - sonar-scanner -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
+#    when:
+#      branch:
+#        - develop
+#    environment:
+#      SONAR_HOST:
+#        from_secret: sonar_host
+#      SONAR_TOKEN:
+#        from_secret: sonar_token
+  - name: veracode-analysis
+    image: maven:3.6.3-jdk-11
+    commands:
+      - >-
+        { test -z "$${VERACODE_ID}" && echo "El analisis con veracode no esta
+        activado para este repositorio." ; } || bash veracode-scan.sh
+    when:
+      branch:
+        - develop
+    environment:
+      VERACODE_ID:
+        from_secret: VERACODE_ID
+      VERACODE_SECRET:
+        from_secret: VERACODE_SECRET
